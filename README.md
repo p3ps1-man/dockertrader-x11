@@ -1,4 +1,4 @@
-# Metatrader 5 docker image
+# Metatrader 5 docker image running locally using X11 server
 
 This project enables you to run MetaTrader 5 with x11 forwarding i got the inspiration from [MetaTrader5-Docker-Image](https://github.com/gmag11/MetaTrader5-Docker-Image). Purpose for this project is to have safe and secure image without using external images. Project is made for linux although you can make it work with windows or macos with software that supports x11 forwarding. When you run the docker container new window will pop up with the program running so you can mount for example project to Experts or config to profiles. This image is published on [Dockerhub](https://hub.docker.com/r/p3ps1man/dockertrader-x11).
 Base image for this project is [dockertrader](https://github.com/p3ps1-man/dockertrader)

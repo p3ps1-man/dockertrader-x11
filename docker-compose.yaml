@@ -2,6 +2,7 @@ services:
   metatrader:
     image: p3ps1man/dockertrader-x11
     container_name: mt5
+    network_mode: host
     environment:
       - DISPLAY=${DISPLAY:-:0}
     volumes:

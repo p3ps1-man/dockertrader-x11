@@ -26,7 +26,7 @@ xhost +local:
 
 2. Clone repository:
 ```bash
-git clone https://github.com/p3ps1-man/dockertrader.git
+git clone https://github.com/p3ps1-man/dockertrader-x11.git
 cd dockertrader
 ```
 

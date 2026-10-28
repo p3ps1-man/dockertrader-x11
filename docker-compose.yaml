@@ -1,15 +1,20 @@
 services:
   metatrader:
-    image: p3ps1man/dockertrader-x11
-    container_name: mt5
-    network_mode: host
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mt5-x11-local
+    container_name: mt5-x11
+    network_mode: bridge
     environment:
       - DISPLAY=${DISPLAY:-:0}
+      - WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS=--no-sandbox
     volumes:
-      - app:/home/mt5/program/
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - ./templates/:/home/mt5/program/MQL5/Profiles/Templates/
-      - ./project/:/home/mt5/program/MQL5/Experts/
-
-volumes:
-  app:
+      - ./:/mnt/hostref:ro
+      - type: bind
+        source: ./templates
+        target: /home/mt5/.wine/drive_c/Program Files/MetaTrader 5/MQL5/Profiles/Templates
+      - type: bind
+        source: ./project
+        target: /home/mt5/.wine/drive_c/Program Files/MetaTrader 5/MQL5/Experts

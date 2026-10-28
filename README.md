@@ -20,47 +20,62 @@ Base image for this project is [dockertrader](https://github.com/p3ps1-man/docke
 ## Usage
 
 1. Enable access to X server:
+
 ```bash
 xhost +local:
 ```
 
 2. Clone repository:
+
 ```bash
 git clone https://github.com/p3ps1-man/dockertrader.git
 cd dockertrader
 ```
 
-
 3. Build the Docker image:
+
 ```bash
 docker build -t mt5 .
 ```
+
 Or just pull the image from dockerhub
+
 ```bash
 docker pull p3ps1man/dockertrader-x11
 ```
 
 4. Run the Docker image:
+
 ```bash
-docker run -it --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix p3ps1man/dockertrader-x11
+docker run -it --rm -e DISPLAY=$DISPLAY -v ./:/mnt/hostref:ro /tmp/.X11-unix:/tmp/.X11-unix p3ps1man/dockertrader-x11
 ```
 
 5. Or you can use something like this with docker-compose.yaml (you can mount your project, chart templates, configs, etc) check out project docker-compose.yaml:
+
 ```bash
 services:
   metatrader:
     image: p3ps1man/dockertrader-x11
-    container_name: mt5
+    container_name: mt5-x11
+    network_mode: bridge
     environment:
       - DISPLAY=${DISPLAY:-:0}
+      - WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS=--no-sandbox
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - ./templates/:/home/mt5/program/MQL5/Profiles/Templates/
-      - ./project/:/home/mt5/program/MQL5/Experts/
+      - ./:/mnt/hostref:ro
+      - type: bind
+        source: ./templates
+        target: /home/mt5/.wine/drive_c/Program Files/MetaTrader 5/MQL5/Profiles/Templates
+      - type: bind
+        source: ./project
+        target: /home/mt5/.wine/drive_c/Program Files/MetaTrader 5/MQL5/Experts
 ```
 
 ## Notice
 
-Default user is mt5 and installation path is program directory inside its home directory ```/home/mt5/program``` from there you can access ```MQL5/Experts``` or other directories you need. Permissions are preconfigured for mt5 user with GID:1000 and UID:1000.
+Mount your current directory in docker compose file so the image picks up the UID and GID
 
-
+```
+- ./:/mnt/hostref:ro
+```

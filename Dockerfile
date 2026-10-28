@@ -1,3 +1,3 @@
-FROM p3ps1man/dockertrader:latest
-
-CMD ["wine", "./program/terminal64.exe"]
+FROM base-pc
+COPY supervisord.conf /home/mt5/.supervisor/supervisord.conf
+CMD ["supervisord", "-n", "-c", "/home/mt5/.supervisor/supervisord.conf"]
